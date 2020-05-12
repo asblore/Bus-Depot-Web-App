@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+     <meta name="viewport" content="width=device-width, initial-scale=1">
+     <link rel="stylesheet" href='../styling/navigation.css'/>
+     <link rel="stylesheet" href='../styling/update.css'/>
+     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css"/>
+     <script src = "https://ajax.googleapis.com/ajax/libs/angularjs/1.3.14/angular.min.js"></script>
+</head>
+
+<body ng-app="update" ng-controller='updateCtrl' ng-init="response=''"></body>
+   <div class="topnav">
+      <a href="home.html">Home</a>
+      <a href="insert.html">Insert</a>
+      <a href="view.html">View</a>
+      <a class="active" href="update.html">Update</a>
+      <a href="delete.html">Delete</a>
+   </div>
+   
+   <br><br>
+   <div class="bg-info text-white">
+      <p>Enter the id to be updated:<input type="text" ng-model="data.id"></p>
+      <button class="btn btn-success" ng-click="view()">OK</button> 
+   </div>
+
+   <div class="bg-warning text-white" ng-if="response.data=='Record with this id does not exist'">
+      <p><b>{{response.data}}</b></p>
+      <img src="../images/img7.jpg" alt="Trulli" width="700" height="500" >
+   </div>
+   <div ng-if="response.data!='Record with this id does not exist' && response!=''"> 
+     <form ng-submit="update()">   
+      <div class="bg-warning text-white"> 
+         <p>
+            The current name is <b>{{copy.data[0].name}}</b><br/>   
+            Enter updated name:<input type="text" ng-model="data.name" required/><br/>
+         </p>
+         <p>
+            The current city is <b>{{copy.data[0].city}}</b><br/>
+            Enter updated city:<input type="text"  ng-model="data.city" required/><br/>
+         </p>
+      </div>
+      <div class="bg-success text-white">
+         <h4><b>Add a new trip</b></h4>
+         <p>
+            Date:<input type="text" ng-model="item.date"/><br>
+	         Destination:<input type="text" ng-model="item.dest"/><br> 
+            No of buses:<input type="number" ng-model="item.nob"/><br>
+            <button type="button" class="btn btn-primary" ng-click="addRow()">Add</button><br>
+         </p>
+      </div>
+      <br>
+      <table class="table table-striped table-bordered table-hover">  
+      <thead>  
+        <th>Date</th>  
+        <th>Destination</th>  
+        <th>No of buses</th>  
+        <th>Options</th>
+       </thead>  
+       <tbody>  
+        <tr ng-repeat="t in list" ng-include="getTemplate($index)">
+         <script type="text/ng-template" id="display">
+          <td>{{t.date}}</td>
+          <td>{{t.dest}}</td>
+          <td>{{t.nob}}</td>
+          <td>
+           <button type="button" class="btn btn-primary" ng-click="edit($index)">Edit</button>
+           <button type="button" class="btn btn-danger" ng-click="removeRow($index)">Delete</button>
+          </td>
+         </script>
+         <script type="text/ng-template" id="edit">
+          <td><input type="text" ng-model="item.date" class="form-control input"/></td>
+          <td><input type="text" ng-model="item.dest" class="form-control input"/></td>
+          <td><input type="number" ng-model="item.nob" class="form-control input"/></td>
+          <td>
+           <button type="button" class="btn btn-primary" ng-click="editRow()">Save</button>
+           <button type="button" class="btn btn-danger" ng-click="reset()">Cancel</button>
+          </td>
+         </script>
+        </tr>  
+       </tbody>  
+      <table>
+      <br/>
+      <input type="submit" class="btn btn-success" value="Submit">   
+     </form>
+     <br>
+     <div class="bg-warning text-white" ng-if="response.data=='Could not update record! Error in database access' || response.data=='Successfully updated record'">
+        <p>
+           <b>Status:{{response.data}}</b>
+        </p>
+   </div> 
+   <script src="../controllers/update.js"></script> 
+</body>
+</html>
